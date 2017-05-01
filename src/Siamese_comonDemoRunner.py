@@ -63,7 +63,7 @@ if dataset == 'dummy':
     decayRate = 0.95
     decaySteps = 200
     dropout_prob = 1 # keep probability
-    lossType = 'cross_entropy' # either 'DrLIM' or 'mse' or 'cross_entropy'
+    lossType = 'DrLIM' # either 'DrLIM' or 'mse' or 'cross_entropy'
     
     
 # define learning rate decay schedule    

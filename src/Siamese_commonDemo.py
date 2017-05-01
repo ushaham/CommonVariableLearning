@@ -66,7 +66,6 @@ class Siamese(object):
         self.weightPenaltyCost = 0.
         
         if self.l2_penalty>0:
-             
             self.weightPenaltyCost = self.l2_penalty*(tf.nn.l2_loss(self.weights['w1_1']) + tf.nn.l2_loss(self.weights['w2_1']) +
                                                 tf.nn.l2_loss(self.weights['w3_1']) + tf.nn.l2_loss(self.weights['w4_1']) +
                                                 tf.nn.l2_loss(self.weights['w1_2']) + tf.nn.l2_loss(self.weights['w2_2']) +

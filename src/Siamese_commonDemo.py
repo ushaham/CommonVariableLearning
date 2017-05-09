@@ -41,7 +41,7 @@ class Siamese(object):
         self.targets = tf.placeholder(tf.float32, [None]) # input layer
 
         # cost
-        self.z_diff = tf.sub(self.z1, self.z2)
+        self.z_diff = tf.subtract(self.z1, self.z2)
         self.z_diff_sq = tf.square(self.z_diff)
         self.z_diff_norm_sq = tf.reduce_sum(self.z_diff_sq, 1)
         

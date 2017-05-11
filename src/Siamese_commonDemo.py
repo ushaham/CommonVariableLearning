@@ -77,7 +77,7 @@ class Siamese(object):
         
         self.optimizer = optimizer.minimize(self.cost, global_step=self.global_step)
 
-        init = tf.initialize_all_variables()
+        init = tf.global_variables_initializer()
         self.sess = tf.Session()
         self.sess.run(init)
 

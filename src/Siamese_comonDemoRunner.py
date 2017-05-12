@@ -25,8 +25,15 @@ if dataset == 'dummy':
     S1_train, S2_train, x_train, S1_test, S2_test, x_test = dh.readDummyData(5000)
 
 # normalize data
-S1_train, S1_test = dh.standard_scale(S1_train, S1_test)
-S2_train, S2_test = dh.standard_scale(S2_train, S2_test)
+m1 = np.mean(S1_train)
+std1 = np.std(S1_train)
+S1_train = (S1_train-m1)/std1
+S1_test = (S1_test-m1)/std1
+
+m2 = np.mean(S2_train)
+std2 = np.std(S2_train)
+S2_train = (S2_train-m2)/std2
+S2_test = (S2_test-m2)/std2
 
 # cut a subset of the training data for validation
 n = S1_train.shape[0]

@@ -5,7 +5,13 @@ Created on Sep 8, 2016
 '''
 import tensorflow as tf
 import numpy as np
-import Utils
+
+def xavier_init(fan_in, fan_out, constant = 1):
+    low = -constant * np.sqrt(6.0 / (fan_in + fan_out))
+    high = constant * np.sqrt(6.0 / (fan_in + fan_out))
+    return tf.random_uniform((fan_in, fan_out),
+                             minval = low, maxval = high,
+                             dtype = tf.float32)
 
 class Siamese(object):
     def __init__(self, n_input1, n_input2, layerSizes, transfer_function=tf.nn.softplus, l2_penalty=0, dropout_prob=1,
@@ -47,7 +53,7 @@ class Siamese(object):
         
         if self.lossType == 'mse':
             self.sigDiff = tf.nn.sigmoid(self.z_diff_norm_sq)
-            self.cost = 0.5 * tf.reduce_sum(tf.pow(tf.sub(self.sigDiff, self.targets), 2.0))
+            self.cost = 0.5 * tf.reduce_sum(tf.pow(tf.subtract(self.sigDiff, self.targets), 2.0))
             
         if self.lossType == 'cross_entropy':
             self.sigDiff = tf.nn.sigmoid(self.z_diff_norm_sq)
@@ -84,22 +90,22 @@ class Siamese(object):
 
     def _initialize_weights(self):
         all_weights = dict()
-        all_weights['w1_1'] = tf.Variable(Utils.xavier_init(self.n_input1[0], self.layerSizes[0]))
+        all_weights['w1_1'] = tf.Variable(xavier_init(self.n_input1[0], self.layerSizes[0]))
         all_weights['b1_1'] = tf.Variable(tf.zeros([self.layerSizes[0]], dtype=tf.float32))
-        all_weights['w2_1'] = tf.Variable(Utils.xavier_init(self.layerSizes[0], self.layerSizes[1]))
+        all_weights['w2_1'] = tf.Variable(xavier_init(self.layerSizes[0], self.layerSizes[1]))
         all_weights['b2_1'] = tf.Variable(tf.zeros([self.layerSizes[1]], dtype=tf.float32))
-        all_weights['w3_1'] = tf.Variable(Utils.xavier_init(self.layerSizes[1], self.layerSizes[2]))
+        all_weights['w3_1'] = tf.Variable(xavier_init(self.layerSizes[1], self.layerSizes[2]))
         all_weights['b3_1'] = tf.Variable(tf.zeros([self.layerSizes[2]], dtype=tf.float32))
-        all_weights['w4_1'] = tf.Variable(Utils.xavier_init(self.layerSizes[2], self.layerSizes[3]))
+        all_weights['w4_1'] = tf.Variable(xavier_init(self.layerSizes[2], self.layerSizes[3]))
         all_weights['b4_1'] = tf.Variable(tf.zeros([self.layerSizes[3]], dtype=tf.float32))
         
-        all_weights['w1_2'] = tf.Variable(Utils.xavier_init(self.n_input2[0], self.layerSizes[0]))
+        all_weights['w1_2'] = tf.Variable(xavier_init(self.n_input2[0], self.layerSizes[0]))
         all_weights['b1_2'] = tf.Variable(tf.zeros([self.layerSizes[0]], dtype=tf.float32))
-        all_weights['w2_2'] = tf.Variable(Utils.xavier_init(self.layerSizes[0], self.layerSizes[1]))
+        all_weights['w2_2'] = tf.Variable(xavier_init(self.layerSizes[0], self.layerSizes[1]))
         all_weights['b2_2'] = tf.Variable(tf.zeros([self.layerSizes[1]], dtype=tf.float32))
-        all_weights['w3_2'] = tf.Variable(Utils.xavier_init(self.layerSizes[1], self.layerSizes[2]))
+        all_weights['w3_2'] = tf.Variable(xavier_init(self.layerSizes[1], self.layerSizes[2]))
         all_weights['b3_2'] = tf.Variable(tf.zeros([self.layerSizes[2]], dtype=tf.float32))
-        all_weights['w4_2'] = tf.Variable(Utils.xavier_init(self.layerSizes[2], self.layerSizes[3]))
+        all_weights['w4_2'] = tf.Variable(xavier_init(self.layerSizes[2], self.layerSizes[3]))
         all_weights['b4_2'] = tf.Variable(tf.zeros([self.layerSizes[3]], dtype=tf.float32))
         return all_weights
 

@@ -50,6 +50,7 @@ class Siamese(object):
         self.z_diff = tf.subtract(self.z1, self.z2)
         self.z_diff_sq = tf.square(self.z_diff)
         self.z_diff_norm_sq = tf.reduce_sum(self.z_diff_sq, 1)
+        self.z_diff_norm = tf.sqrt(self.z_diff_norm_sq)
         
         if self.lossType == 'mse':
             self.sigDiff = tf.nn.sigmoid(self.z_diff_norm_sq)
@@ -59,13 +60,13 @@ class Siamese(object):
             self.sigDiff = tf.nn.sigmoid(self.z_diff_norm_sq)
             self.cost = 0.5 * tf.reduce_sum(tf.nn.sigmoid_cross_entropy_with_logits(self.z_diff_norm_sq, self.targets))    
         
-        if self.lossType == 'DrLIM':   
-            # DrLIM loss
-            targets_Mod = 2*self.targets - 1
+        if self.lossType == 'contrastive':   
+            # contrastive loss
+            targets_Mod = 2*self.targets - 1 # 0 for positive pairs, 1 for negative pairs
             m = tf.constant(1, dtype=tf.float32) # margin
             zero = tf.constant(0, dtype=tf.float32)
             one = tf.constant(1, dtype=tf.float32)
-            hingeTerm = tf.square(tf.maximum(zero, m-self.z_diff_norm_sq))
+            hingeTerm = tf.square(tf.maximum(zero, m-self.z_diff_norm))
             self.cost = 0.5*(tf.reduce_sum((one-targets_Mod)*self.z_diff_norm_sq) + tf.reduce_sum(targets_Mod * hingeTerm))
              
         

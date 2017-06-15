@@ -70,7 +70,7 @@ if dataset == 'dummy':
     decayRate = 0.95
     decaySteps = 200
     dropout_prob = 1 # keep probability
-    lossType = 'DrLIM' # either 'DrLIM' or 'mse' or 'cross_entropy'
+    lossType = 'contrastive' # either 'contrastive' or 'mse' or 'cross_entropy'
     
     
 # define learning rate decay schedule    
@@ -140,7 +140,7 @@ if lossType == 'mse' or lossType == 'cross_entropy':
     y_pred[zTrain_sig<.75]=0
     y_pred[zTrain_sig>.75]=1
     
-if lossType == 'DrLIM':
+if lossType == 'contrastive':
     z_diff_norm_sq_train = siamese.getZ_diff_norm_sq(X_train_1, X_train_2)
     y_pred = np.zeros(n_trainSamples)
     y_pred[z_diff_norm_sq_train<1.0]=0 # 1 is the margin
@@ -163,7 +163,7 @@ if lossType == 'mse' or lossType == 'cross_entropy':
     y_pred[zTest_sig<.75]=0
     y_pred[zTest_sig>.75]=1
     
-if lossType == 'DrLIM':
+if lossType == 'contrastive':
     z_diff_norm_sq_test = siamese.getZ_diff_norm_sq(X_test_1, X_test_2)
     y_pred = np.zeros(n_testSamples)
     y_pred[z_diff_norm_sq_test<1.0]=0
